@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
 import streamlit as st
 import requests
+import os
 
-# ⚠️ 请替换为你自己的高德 Key
-GAODE_KEY = "64e1151e253e773083d3ce4aeecba9db"
+# ✅ 安全读取高德 Key：优先从 Streamlit Secrets，本地 fallback 到环境变量
+try:
+    GAODE_KEY = st.secrets["GAODE_KEY"]
+except (KeyError, AttributeError):
+    # 本地开发时可用环境变量（或直接设为空用于测试）
+    GAODE_KEY = os.getenv("GAODE_KEY", "")
+
+if not GAODE_KEY:
+    st.error("❌ 高德地图 API Key 未配置！请在 Streamlit Cloud 的 Secrets 中设置。")
+    st.stop()
 
 def geocode(address):
     """地址转坐标（简化版，沿用你之前的逻辑）"""
@@ -114,4 +123,5 @@ if st.button("规划路线"):
         if lines:
             st.write(f"途经线路：{' → '.join(lines)}")
         else:
+
             st.write("未识别到地铁线路")
