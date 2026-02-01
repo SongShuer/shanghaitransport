@@ -21,7 +21,7 @@ var/
 *.egg
 
 # =============== Streamlit / 本地开发 ===============
-.streamlit/secrets.toml    # ← 最重要！防止密钥泄露
+.streamlit/secrets.toml    # 防止密钥泄露
 .env                       # 如果你用 dotenv
 .DS_Store                  # Mac 系统文件
 Thumbs.db                  # Windows 缩略图缓存
