@@ -4,7 +4,7 @@ import streamlit as st
 import requests
 import os
 
-# ✅ 安全读取高德 Key：优先从 Streamlit Secrets，本地 fallback 到环境变量
+# 读取高德 Key
 try:
     GAODE_KEY = st.secrets["GAODE_KEY"]
 except (KeyError, AttributeError):
@@ -12,15 +12,11 @@ except (KeyError, AttributeError):
     GAODE_KEY = os.getenv("GAODE_KEY", "")
 
 if not GAODE_KEY:
-    st.error("❌ 高德地图 API Key 未配置！请在 Streamlit Cloud 的 Secrets 中设置。")
+    st.error("高德地图 API Key 未配置！请在 Streamlit Cloud 的 Secrets 中设置。")
     st.stop()
 
-# ==============================
-# 以下是你原来的函数，完全不用改！
-# ==============================
-
 def geocode(address):
-    """地址转坐标（简化版，沿用你之前的逻辑）"""
+    """地址转坐标"""
     url = "https://restapi.amap.com/v3/geocode/geo"
     params = {"address": address, "key": GAODE_KEY, "city": "上海"}
     try:
@@ -33,7 +29,7 @@ def geocode(address):
     return None
 
 def get_transit_route(origin, dest):
-    """获取公交路线（沿用你之前的调用方式）"""
+    """获取公交路线"""
     url = "https://restapi.amap.com/v5/direction/transit/integrated"
     params = {
         "key": GAODE_KEY,
@@ -54,10 +50,7 @@ def get_transit_route(origin, dest):
     return []
 
 def parse_route_v5(transit):
-    """
-    专为你贴出的真实数据结构设计的解析器
-    示例字段: transit['segments'][0]['bus']['buslines'][0]['name'] = "地铁7号线(美兰湖--花木路)"
-    """
+
     lines = []
     total_distance = 0
 
